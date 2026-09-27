@@ -1,0 +1,20 @@
+name: Keep DevSpace Cloud Awake
+
+on:
+  schedule:
+    - cron: "*/10 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  wake:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Wake DevSpace Cloud
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl --fail --silent --show-error             --retry 2 --retry-delay 3 --max-time 60             -H 'x-vercel-cron-schedule: */10 * * * *'             'https://vercel-sandbox-default-project-five-psi-49.vercel.app/api/wake'
